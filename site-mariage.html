@@ -1,0 +1,1673 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Invitation de Mariage & RSVP</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600;1,700&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,400;1,600&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --cream-bg: #FAF7F2;
+      --cream-card: #FFFDF9;
+      --cream-subtle: #F3ECE1;
+      --burgundy-deep: #5E1224;
+      --burgundy-dark: #430A18;
+      --olive-envelope: #6F7A4A;
+      --olive-light: #7C8754;
+      --olive-dark: #555E37;
+      --sage-deep: #3D5A45;
+      --periwinkle: #7B8CDE;
+      --terracotta: #C84B28;
+      --ink-primary: #2A1B1E;
+      --ink-muted: #67585B;
+      --border-soft: rgba(94, 18, 36, 0.14);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background-color: var(--cream-bg);
+      color: var(--ink-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-image:
+        radial-gradient(circle at 12% 8%, rgba(123, 140, 222, 0.08) 0%, transparent 34%),
+        radial-gradient(circle at 88% 14%, rgba(200, 75, 40, 0.08) 0%, transparent 36%),
+        radial-gradient(circle at 50% 85%, rgba(61, 90, 69, 0.07) 0%, transparent 45%);
+      overflow-x: hidden;
+    }
+
+    .font-editorial {
+      font-family: 'Playfair Display', Georgia, serif;
+    }
+
+    .font-cursive {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-style: italic;
+    }
+
+    .font-serif-display {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+    }
+
+    /* Texture subtile inspirée du papier épais & de l'enveloppe */
+    .paper-grain {
+      background-color: var(--cream-card);
+      box-shadow:
+        0 18px 45px rgba(42, 27, 30, 0.08),
+        0 2px 8px rgba(94, 18, 36, 0.05);
+      border: 1px solid var(--border-soft);
+    }
+
+    .envelope-texture {
+      background: linear-gradient(155deg, var(--olive-light) 0%, var(--olive-envelope) 52%, var(--olive-dark) 100%);
+      box-shadow:
+        0 16px 32px rgba(55, 62, 34, 0.24),
+        inset 0 1px 0 rgba(255, 255, 255, 0.24);
+    }
+
+    .dahlia-card {
+      background: radial-gradient(circle at 30% 20%, #781930 0%, var(--burgundy-deep) 58%, var(--burgundy-dark) 100%);
+      box-shadow:
+        0 14px 30px rgba(67, 10, 24, 0.28),
+        inset 0 0 0 1px rgba(250, 247, 242, 0.22);
+    }
+
+    .polaroid-frame {
+      background: #FFFFFF;
+      padding: 7px 7px 22px 7px;
+      border-radius: 4px;
+      box-shadow: 0 10px 24px rgba(42, 27, 30, 0.16);
+      border: 1px solid rgba(42, 27, 30, 0.08);
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+    }
+
+    .polaroid-frame:hover {
+      transform: rotate(0deg) scale(1.03) translateY(-3px);
+      box-shadow: 0 16px 32px rgba(42, 27, 30, 0.22);
+      z-index: 20;
+    }
+
+    .btn-burgundy {
+      background-color: var(--burgundy-deep);
+      color: #FAF7F2;
+      transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 8px 20px rgba(94, 18, 36, 0.22);
+    }
+
+    .btn-burgundy:hover {
+      background-color: var(--burgundy-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 12px 24px rgba(94, 18, 36, 0.28);
+    }
+
+    .btn-burgundy:active {
+      transform: translateY(0);
+    }
+
+    @keyframes floatSoft {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-5px);
+      }
+    }
+
+    .float-slow {
+      animation: floatSoft 6s ease-in-out infinite;
+    }
+
+    .custom-input {
+      width: 100%;
+      background-color: #FAF7F2;
+      border: 1px solid rgba(94, 18, 36, 0.2);
+      border-radius: 0.75rem;
+      padding: 0.75rem 0.95rem;
+      font-size: 0.95rem;
+      color: var(--ink-primary);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+
+    .custom-input:focus {
+      outline: none;
+      background-color: #FFFFFF;
+      border-color: var(--burgundy-deep);
+      box-shadow: 0 0 0 3px rgba(94, 18, 36, 0.12);
+    }
+
+    .chip-option input:checked + .chip-box {
+      background-color: var(--burgundy-deep);
+      color: #FAF7F2;
+      border-color: var(--burgundy-deep);
+      box-shadow: 0 6px 14px rgba(94, 18, 36, 0.18);
+    }
+
+    .chip-box {
+      transition: all 0.2s ease;
+    }
+
+    /* Éléments réservés aux mariés : visibles seulement avec ?hotes=1 dans l'adresse */
+    body:not(.is-host) .host-only {
+      display: none !important;
+    }
+  </style>
+</head>
+<body class="min-h-screen antialiased selection:bg-[#5E1224] selection:text-[#FAF7F2]">
+  <!-- Barre supérieure discrète de personnalisation -->
+  <header class="sticky top-0 z-40 backdrop-blur-md bg-[#FAF7F2]/85 border-b border-[#5E1224]/10">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
+      <a href="#top" class="flex items-center gap-2 text-xs sm:text-sm tracking-[0.2em] uppercase text-[#5E1224] font-medium">
+        <span class="inline-block w-2 h-2 rounded-full bg-[#C84B28]"></span>
+        <span id="navBrandText">ON SE MARIE • 2027 • J &amp; J</span>
+      </a>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <a
+          href="#rsvp-section"
+          class="hidden sm:inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-medium text-[#5E1224] border border-[#5E1224]/25 hover:bg-[#5E1224]/5 transition"
+        >
+          Répondre (RSVP)
+        </a>
+        <button
+          id="openCustomizeBtn"
+          type="button"
+          class="host-only inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium bg-[#F3ECE1] text-[#2A1B1E] hover:bg-[#EAE0D0] border border-[#5E1224]/15 transition cursor-pointer"
+        >
+          <svg class="w-3.5 h-3.5 text-[#5E1224]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+          </svg>
+          <span>Personnaliser les infos</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top" class="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-20 space-y-12 sm:space-y-16">
+    <!-- SECTION 1 : EN-TÊTE ÉDITORIAL & CARTE-ENVELOPPE INTERACTIVE -->
+    <section class="paper-grain rounded-3xl p-6 sm:p-10 md:p-12 relative overflow-hidden">
+      <!-- Fleurs décoratives SVG aux coins -->
+      <svg
+        aria-hidden="true"
+        class="pointer-events-none absolute -top-6 -left-6 w-36 h-36 sm:w-48 sm:h-48 opacity-90"
+        viewBox="0 0 200 200"
+      >
+        <!-- Feuilles sauge et eucalyptus -->
+        <ellipse cx="48" cy="76" rx="34" ry="12" transform="rotate(-28 48 76)" fill="#3D5A45" opacity="0.82" />
+        <ellipse cx="82" cy="44" rx="32" ry="11" transform="rotate(-12 82 44)" fill="#555E37" opacity="0.75" />
+        <ellipse cx="32" cy="112" rx="28" ry="10" transform="rotate(-55 32 112)" fill="#3D5A45" opacity="0.7" />
+        <!-- Fleurs bleu pervenche / nigelle -->
+        <circle cx="96" cy="86" r="6" fill="#7B8CDE" />
+        <circle cx="88" cy="80" r="5" fill="#9AA8EC" />
+        <circle cx="104" cy="80" r="5" fill="#7B8CDE" />
+        <circle cx="90" cy="93" r="5" fill="#7B8CDE" />
+        <circle cx="102" cy="93" r="5" fill="#9AA8EC" />
+        <circle cx="96" cy="86" r="2.5" fill="#5E1224" />
+        <!-- Touche terracotta -->
+        <path d="M126 36 C134 26, 146 30, 142 42 C136 44, 128 42, 126 36 Z" fill="#C84B28" />
+        <path d="M138 50 C148 44, 156 52, 148 60 C142 58, 138 54, 138 50 Z" fill="#C84B28" opacity="0.85" />
+      </svg>
+
+      <svg
+        aria-hidden="true"
+        class="pointer-events-none absolute -bottom-8 -right-8 w-40 h-40 sm:w-52 sm:h-52 opacity-90"
+        viewBox="0 0 200 200"
+      >
+        <ellipse cx="146" cy="134" rx="36" ry="12" transform="rotate(24 146 134)" fill="#3D5A45" opacity="0.82" />
+        <ellipse cx="116" cy="158" rx="32" ry="11" transform="rotate(8 116 158)" fill="#555E37" opacity="0.75" />
+        <!-- Dahlia bordeaux -->
+        <g transform="translate(132, 118)">
+          <ellipse cx="0" cy="-16" rx="8" ry="15" fill="#5E1224" />
+          <ellipse cx="0" cy="16" rx="8" ry="15" fill="#5E1224" />
+          <ellipse cx="-16" cy="0" rx="15" ry="8" fill="#5E1224" />
+          <ellipse cx="16" cy="0" rx="15" ry="8" fill="#5E1224" />
+          <ellipse cx="-11" cy="-11" rx="8" ry="14" transform="rotate(-45 -11 -11)" fill="#781930" />
+          <ellipse cx="11" cy="-11" rx="8" ry="14" transform="rotate(45 11 -11)" fill="#781930" />
+          <ellipse cx="-11" cy="11" rx="8" ry="14" transform="rotate(45 -11 11)" fill="#430A18" />
+          <ellipse cx="11" cy="11" rx="8" ry="14" transform="rotate(-45 11 11)" fill="#430A18" />
+          <circle cx="0" cy="0" r="6" fill="#C84B28" />
+        </g>
+        <!-- Pervenche -->
+        <circle cx="84" cy="128" r="5" fill="#7B8CDE" />
+        <circle cx="92" cy="122" r="4.5" fill="#9AA8EC" />
+        <circle cx="88" cy="136" r="4.5" fill="#7B8CDE" />
+      </svg>
+
+      <!-- En-tête éditorial -->
+      <div class="relative z-10 text-center max-w-2xl mx-auto">
+        <p
+          id="heroKicker"
+          class="text-xs sm:text-sm tracking-[0.26em] uppercase text-[#3D5A45] font-semibold mb-3"
+        >
+          ON SE MARIE • 2027 • J &amp; J
+        </p>
+
+        <h1
+          id="heroCoupleNames"
+          class="font-cursive text-4xl sm:text-6xl text-[#5E1224] font-semibold leading-tight"
+        >
+          Justine &amp; Julien
+        </h1>
+
+        <p
+          id="heroSubtitle"
+          class="mt-3 text-sm sm:text-base text-[#67585B] leading-relaxed"
+        >
+          Nous avons tellement hâte de célébrer notre amour entourés de nos proches le temps d'un week-end chaleureux et festif.
+        </p>
+
+        <div class="mt-5 inline-flex flex-wrap items-center justify-center gap-2 sm:gap-4 px-4 py-2 rounded-full bg-[#FAF7F2] border border-[#5E1224]/15 text-xs sm:text-sm text-[#2A1B1E]">
+          <span id="heroDateDisplay" class="font-medium text-[#5E1224]">02 octobre 2027</span>
+          <span class="text-[#C84B28]">•</span>
+          <span id="heroLocationDisplay">Domaine Pourki</span>
+        </div>
+      </div>
+
+      <!-- Composition visuelle centrale : Enveloppe vert olive + Carte bordeaux découpée + Polaroids -->
+      <div class="relative z-10 mt-10 sm:mt-12 max-w-3xl mx-auto">
+        <div class="relative pt-8 pb-4 px-2 sm:px-6 flex flex-col items-center">
+          <!-- Rangée supérieure : Polaroid gauche + Carte bordeaux découpée + Polaroid droit -->
+          <div class="w-full grid grid-cols-1 md:grid-cols-12 items-center gap-6 md:gap-3 relative z-10">
+            <!-- Photo souvenir 1 -->
+            <div class="md:col-span-3 flex justify-center order-2 md:order-1">
+              <div class="polaroid-frame -rotate-3 w-44 sm:w-48">
+                <div class="aspect-square rounded-sm overflow-hidden bg-gradient-to-br from-[#5E1224] via-[#7B8CDE]/35 to-[#3D5A45] flex flex-col items-center justify-center text-center p-3 relative">
+                  <!-- Illustration SVG scène souvenir -->
+                  <svg class="w-full h-full object-cover" viewBox="0 0 180 180" fill="none">
+                    <rect width="180" height="180" fill="#EAE2D6" />
+                    <circle cx="132" cy="46" r="22" fill="#C84B28" opacity="0.25" />
+                    <path d="M0 132 Q48 104 96 126 T180 118 L180 180 L0 180 Z" fill="#3D5A45" opacity="0.78" />
+                    <path d="M0 148 Q62 128 122 146 T180 138 L180 180 L0 180 Z" fill="#555E37" />
+                    <!-- Silhouettes complices -->
+                    <circle cx="78" cy="76" r="11" fill="#5E1224" />
+                    <path d="M63 128 C63 98, 93 98, 93 128 Z" fill="#5E1224" />
+                    <circle cx="102" cy="80" r="10" fill="#2A1B1E" />
+                    <path d="M89 128 C89 102, 115 102, 115 128 Z" fill="#2A1B1E" />
+                  </svg>
+                </div>
+                <p id="photoCaption1" class="mt-2 text-center font-cursive text-base text-[#2A1B1E]">
+                  Nos débuts à Montréal
+                </p>
+              </div>
+            </div>
+
+            <!-- Carte bordeaux dahlia centrale découpée (cliquable pour basculer recto/détails) -->
+            <div class="md:col-span-6 flex justify-center order-1 md:order-2 z-20">
+              <button
+                id="toggleCardDetailsBtn"
+                type="button"
+                class="dahlia-card float-slow w-full max-w-sm rounded-t-[2.75rem] rounded-b-2xl px-6 py-8 sm:px-8 sm:py-9 text-center text-[#FAF7F2] cursor-pointer focus:outline-none focus:ring-4 focus:ring-[#C84B28]/35 transition"
+                title="Cliquez pour voir les détails de la célébration"
+              >
+                <span class="inline-block text-[11px] uppercase tracking-[0.28em] text-[#FAF7F2]/75 mb-2">
+                  Save the Date &amp; Invitation
+                </span>
+
+                <div id="cardPrimaryView">
+                  <p class="font-cursive text-4xl sm:text-5xl leading-none text-[#FAF7F2] font-semibold">
+                    Save<br />Our Date
+                  </p>
+                  <div class="my-4 h-px w-16 mx-auto bg-[#FAF7F2]/30"></div>
+                  <p id="cardDateBig" class="font-serif-display text-2xl sm:text-3xl tracking-[0.14em] text-[#FAF7F2]">
+                    02 • 10 • 2027
+                  </p>
+                  <p id="cardVenueShort" class="mt-2 text-xs sm:text-sm text-[#FAF7F2]/85 tracking-wide">
+                    Cérémonie • Souper • Soirée en chalets
+                  </p>
+                </div>
+
+                <div id="cardSecondaryView" class="hidden space-y-2.5 text-sm text-[#FAF7F2]/95">
+                  <p class="font-cursive text-2xl text-[#FAF7F2]">Détails du Week-end</p>
+                  <p id="cardScheduleText" class="text-xs sm:text-sm leading-relaxed text-[#FAF7F2]/90">
+                    Arrivée dès 13h00 • Buffet festif &amp; danse
+                  </p>
+                  <p id="cardDressCodeText" class="text-xs italic text-[#F3ECE1]/85">
+                    Ambiance : Chic champêtre &amp; confortable
+                  </p>
+                </div>
+
+                <span class="mt-5 inline-flex items-center gap-1.5 text-[11px] uppercase tracking-[0.2em] text-[#FAF7F2]/80 bg-white/10 px-3 py-1 rounded-full">
+                  <span id="cardFlipLabel">Toucher pour voir l'horaire</span>
+                </span>
+              </button>
+            </div>
+
+            <!-- Photo souvenir 2 -->
+            <div class="md:col-span-3 flex justify-center order-3">
+              <div class="polaroid-frame rotate-3 w-44 sm:w-48">
+                <div class="aspect-square rounded-sm overflow-hidden">
+                  <svg class="w-full h-full object-cover" viewBox="0 0 180 180" fill="none">
+                    <rect width="180" height="180" fill="#F4ECE2" />
+                    <circle cx="48" cy="44" r="24" fill="#7B8CDE" opacity="0.28" />
+                    <circle cx="142" cy="134" r="28" fill="#5E1224" opacity="0.14" />
+                    <!-- Bouquet stylisé -->
+                    <path d="M90 156 L90 96" stroke="#3D5A45" stroke-width="5" stroke-linecap="round" />
+                    <path d="M90 132 L62 108" stroke="#3D5A45" stroke-width="4" stroke-linecap="round" />
+                    <path d="M90 126 L118 104" stroke="#3D5A45" stroke-width="4" stroke-linecap="round" />
+                    <circle cx="90" cy="84" r="18" fill="#5E1224" />
+                    <circle cx="66" cy="96" r="13" fill="#7B8CDE" />
+                    <circle cx="114" cy="94" r="13" fill="#C84B28" />
+                    <circle cx="90" cy="64" r="11" fill="#781930" />
+                  </svg>
+                </div>
+                <p id="photoCaption2" class="mt-2 text-center font-cursive text-base text-[#2A1B1E]">
+                  Le grand oui à venir
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Enveloppe vert olive / sauge texturée avec sceau monogramme -->
+          <div class="w-full max-w-xl -mt-8 sm:-mt-10 relative z-10">
+            <div class="envelope-texture rounded-2xl pt-12 pb-7 px-6 sm:px-10 text-center relative overflow-hidden">
+              <!-- Rabat d'enveloppe stylisé -->
+              <svg
+                aria-hidden="true"
+                class="absolute top-0 left-0 w-full h-14 pointer-events-none"
+                viewBox="0 0 600 80"
+                preserveAspectRatio="none"
+              >
+                <polygon points="0,0 600,0 300,68" fill="rgba(42, 27, 30, 0.14)" />
+                <polyline points="0,0 300,68 600,0" fill="none" stroke="rgba(250, 247, 242, 0.35)" stroke-width="2" />
+              </svg>
+
+              <!-- Médaillon monogramme ovale -->
+              <div class="inline-flex items-center justify-center w-20 h-14 rounded-[50%] border-2 border-[#FAF7F2]/85 bg-[#6F7A4A]/90 shadow-md mb-3">
+                <span id="monogramText" class="font-cursive text-2xl sm:text-3xl font-semibold text-[#FAF7F2] tracking-wider">
+                  J &amp; J
+                </span>
+              </div>
+
+              <p class="text-xs uppercase tracking-[0.24em] text-[#FAF7F2]/85 font-medium">
+                Réponse souhaitée avant le <span id="rsvpDeadlineText" class="underline decoration-[#FAF7F2]/50">15 Juin 2027</span>
+              </p>
+
+              <div class="mt-5 flex flex-wrap items-center justify-center gap-3">
+                <a
+                  href="#rsvp-section"
+                  class="inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-[#FAF7F2] text-[#5E1224] font-medium text-sm hover:bg-[#F3ECE1] transition shadow-md"
+                >
+                  Confirmer ma présence
+                </a>
+                <a
+                  href="#infos-pratiques"
+                  class="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-[#430A18]/35 text-[#FAF7F2] border border-[#FAF7F2]/30 font-medium text-sm hover:bg-[#430A18]/50 transition"
+                >
+                  Infos chalets &amp; repas
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2 : INFOS PRATIQUES, REPAS, HÉBERGEMENT & CONTRIBUTION -->
+    <section id="infos-pratiques" class="space-y-6">
+      <div class="text-center max-w-2xl mx-auto">
+        <p class="text-xs uppercase tracking-[0.25em] text-[#C84B28] font-semibold">À savoir pour le week-end</p>
+        <h2 class="mt-1 font-editorial text-2xl sm:text-4xl text-[#2A1B1E]">
+          Repas, Chalets &amp; Participation
+        </h2>
+        <p class="mt-2 text-sm sm:text-base text-[#67585B]">
+          Tout est pensé pour une célébration décontractée, chaleureuse et transparente entre amis et famille.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+        <!-- Carte 1 : Repas & Boissons -->
+        <article class="paper-grain rounded-2xl p-6 flex flex-col justify-between border-t-4 border-t-[#5E1224]">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-[#5E1224]/10 text-[#5E1224] flex items-center justify-center mb-4">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8.25v-1.5m0 1.5c-1.355 0-2.697.056-4.024.166C6.845 8.51 6 9.473 6 10.608v2.513m6-4.871c1.355 0 2.697.056 4.024.166C17.155 8.51 18 9.473 18 10.608v2.513M15 8.25v-1.5m-6 1.5v-1.5m12 9.75l-1.5.75a3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0L3 16.5m15-3.379a48.474 48.474 0 00-6-.371c-2.032 0-4.034.126-6 .371m12 0c.39.049.777.102 1.163.16 1.07.16 1.837 1.094 1.837 2.175v5.169c0 .621-.504 1.125-1.125 1.125H4.125A1.125 1.125 0 013 20.625v-5.17c0-1.08.768-2.014 1.837-2.174A47.78 47.78 0 016 13.12M12.265 3.11a.375.375 0 11-.53 0L12 2.845l.265.265zm-3 0a.375.375 0 11-.53 0L9 2.845l.265.265zm6 0a.375.375 0 11-.53 0L15 2.845l.265.265z" />
+              </svg>
+            </div>
+            <h3 class="font-editorial text-xl text-[#2A1B1E] font-semibold">Repas &amp; Boissons</h3>
+            <p id="foodInfoText" class="mt-2.5 text-sm text-[#67585B] leading-relaxed">
+              Buffet traiteur convivial (formule sans personnel de service) avec bouchées, dessert et bar maison (vin, bières, prêts-à-boire et options sans alcool).
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-[#5E1224]/10 text-xs text-[#3D5A45] font-medium">
+            Allergies &amp; régimes pris en note dans le RSVP
+          </div>
+        </article>
+
+        <!-- Carte 2 : Hébergement en chalets -->
+        <article class="paper-grain rounded-2xl p-6 flex flex-col justify-between border-t-4 border-t-[#7B8CDE]">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-[#7B8CDE]/20 text-[#3F51B5] flex items-center justify-center mb-4">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+              </svg>
+            </div>
+            <h3 class="font-editorial text-xl text-[#2A1B1E] font-semibold">Dormir en Chalet</h3>
+            <p id="lodgingInfoText" class="mt-2.5 text-sm text-[#67585B] leading-relaxed">
+              Des chalets partagés (de 4 à 10 personnes) sont disponibles sur place au coût de 55 $/personne/nuit si ça vous tente de dormir sur place. Restez bruncher avec nous le lendemain :)
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-[#5E1224]/10 text-xs text-[#5E1224] font-semibold">
+            Distinct de la contribution de réception
+          </div>
+        </article>
+
+        <!-- Carte 3 : Contribution suggérée hors logement -->
+        <article class="paper-grain rounded-2xl p-6 flex flex-col justify-between border-t-4 border-t-[#3D5A45]">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-[#3D5A45]/15 text-[#3D5A45] flex items-center justify-center mb-4">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+              </svg>
+            </div>
+            <h3 class="font-editorial text-xl text-[#2A1B1E] font-semibold">Contribution (Hors Logement)</h3>
+            <p class="mt-2.5 text-sm text-[#67585B] leading-relaxed">
+              Votre présence est notre plus beau cadeau. Pour aider à couvrir le repas et les boissons, une participation suggérée d'environ
+              <strong id="suggestedContribDisplay" class="text-[#2A1B1E]">50 $ / invité</strong>
+              est bienvenue (l'hébergement n'est pas inclus dans ce montant).
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-[#5E1224]/10 text-xs text-[#3D5A45] font-medium">
+            Optionnel &amp; ajustable selon vos moyens
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- SECTION 3 : FORMULAIRE RSVP INTERACTIF COMPLET -->
+    <section id="rsvp-section" class="paper-grain rounded-3xl p-6 sm:p-10">
+      <div class="max-w-3xl mx-auto">
+        <div class="text-center mb-8">
+          <p class="text-xs uppercase tracking-[0.25em] text-[#5E1224] font-semibold">Formulaire de réponse</p>
+          <h2 class="mt-1 font-editorial text-2xl sm:text-4xl text-[#2A1B1E]">
+            Confirmez Votre Présence
+          </h2>
+          <p class="mt-2 text-sm text-[#67585B]">
+            Merci de remplir ce formulaire pour chaque groupe ou famille afin de faciliter l'organisation du repas et des chalets.
+          </p>
+        </div>
+
+        <!-- Bannière de confirmation après soumission -->
+        <div
+          id="confirmationBanner"
+          class="hidden mb-8 rounded-2xl bg-[#EBF2ED] border border-[#3D5A45]/30 p-5 sm:p-6 text-[#2A1B1E]"
+        >
+          <div class="flex items-start gap-3.5">
+            <div class="w-9 h-9 rounded-full bg-[#3D5A45] text-white flex items-center justify-center shrink-0 mt-0.5">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <div class="flex-1">
+              <h3 id="confirmationTitle" class="font-editorial text-xl font-semibold text-[#3D5A45]">
+                Merci ! Votre réponse a bien été enregistrée.
+              </h3>
+              <p id="confirmationSummary" class="mt-1 text-sm text-[#2A1B1E]/85 leading-relaxed"></p>
+              <button
+                id="newRsvpBtn"
+                type="button"
+                class="mt-3 inline-flex items-center text-xs font-semibold uppercase tracking-wider text-[#5E1224] hover:underline cursor-pointer"
+              >
+                Envoyer une autre réponse
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <form id="rsvpForm" class="space-y-7" novalidate>
+          <!-- 1. Identité & Coordonnées -->
+          <div class="space-y-4">
+            <h3 class="font-editorial text-lg text-[#5E1224] border-b border-[#5E1224]/15 pb-2">
+              1. Vos coordonnées
+            </h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="guestName" class="block text-sm font-medium text-[#2A1B1E] mb-1.5">
+                  Prénom &amp; Nom (ou noms des invités du groupe) <span class="text-[#C84B28]">*</span>
+                </label>
+                <input
+                  id="guestName"
+                  name="guestName"
+                  type="text"
+                  required
+                  placeholder="Ex. Camille Tremblay & Marc Lavoie"
+                  class="custom-input"
+                />
+                <p id="guestNameError" class="hidden mt-1 text-xs text-[#C84B28]">Veuillez indiquer votre prénom et nom.</p>
+              </div>
+
+              <div>
+                <label for="guestContact" class="block text-sm font-medium text-[#2A1B1E] mb-1.5">
+                  Courriel et/ou téléphone <span class="text-[#C84B28]">*</span>
+                </label>
+                <input
+                  id="guestContact"
+                  name="guestContact"
+                  type="text"
+                  required
+                  placeholder="camille@exemple.com / 514-555-0192"
+                  class="custom-input"
+                />
+                <p id="guestContactError" class="hidden mt-1 text-xs text-[#C84B28]">Veuillez fournir un courriel ou un numéro de téléphone.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Présence & Nombre de personnes -->
+          <div class="space-y-4">
+            <h3 class="font-editorial text-lg text-[#5E1224] border-b border-[#5E1224]/15 pb-2">
+              2. Présence &amp; groupe
+            </h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <label class="chip-option cursor-pointer">
+                <input type="radio" name="attendance" value="Oui, j'y serai" class="sr-only" checked />
+                <div class="chip-box rounded-xl border border-[#5E1224]/20 bg-[#FAF7F2] p-4 flex items-center gap-3">
+                  <span class="w-4 h-4 rounded-full border-2 border-current flex items-center justify-center">
+                    <span class="w-2 h-2 rounded-full bg-current"></span>
+                  </span>
+                  <div>
+                    <div class="text-sm font-semibold">Oui, j'y serai !</div>
+                    <div class="text-xs opacity-75">On a hâte de célébrer ensemble</div>
+                  </div>
+                </div>
+              </label>
+
+              <label class="chip-option cursor-pointer">
+                <input type="radio" name="attendance" value="Non, je ne pourrai pas venir" class="sr-only" />
+                <div class="chip-box rounded-xl border border-[#5E1224]/20 bg-[#FAF7F2] p-4 flex items-center gap-3">
+                  <span class="w-4 h-4 rounded-full border-2 border-current"></span>
+                  <div>
+                    <div class="text-sm font-semibold">Non, je ne pourrai pas venir</div>
+                    <div class="text-xs opacity-75">Je penserai fort à vous de loin</div>
+                  </div>
+                </div>
+              </label>
+            </div>
+
+            <div id="attendingFields" class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+              <div>
+                <label for="guestCount" class="block text-sm font-medium text-[#2A1B1E] mb-1.5">
+                  Nombre de personnes dans le groupe
+                </label>
+                <select id="guestCount" name="guestCount" class="custom-input">
+                  <option value="1">1 personne</option>
+                  <option value="2" selected>2 personnes</option>
+                  <option value="3">3 personnes</option>
+                  <option value="4">4 personnes</option>
+                  <option value="5">5 personnes</option>
+                  <option value="6">6 personnes ou plus</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="companionsNames" class="block text-sm font-medium text-[#2A1B1E] mb-1.5">
+                  Noms des accompagnants / enfants (si applicable)
+                </label>
+                <input
+                  id="companionsNames"
+                  name="companionsNames"
+                  type="text"
+                  placeholder="Ex. Léo (enfant, 7 ans)"
+                  class="custom-input"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Préférences alimentaires & allergies -->
+          <div id="dietaryBlock" class="space-y-4">
+            <h3 class="font-editorial text-lg text-[#5E1224] border-b border-[#5E1224]/15 pb-2">
+              3. Préférences alimentaires, allergies &amp; régimes spéciaux
+            </h3>
+
+            <div class="flex flex-wrap gap-2.5">
+              <label class="chip-option cursor-pointer">
+                <input type="checkbox" name="dietary" value="Aucun régime particulier" class="sr-only" checked />
+                <span class="chip-box inline-block px-3.5 py-2 rounded-full text-xs sm:text-sm border border-[#5E1224]/20 bg-[#FAF7F2]">
+                  Aucun régime particulier
+                </span>
+              </label>
+              <label class="chip-option cursor-pointer">
+                <input type="checkbox" name="dietary" value="Végétarien" class="sr-only" />
+                <span class="chip-box inline-block px-3.5 py-2 rounded-full text-xs sm:text-sm border border-[#5E1224]/20 bg-[#FAF7F2]">
+                  Végétarien
+                </span>
+              </label>
+              <label class="chip-option cursor-pointer">
+                <input type="checkbox" name="dietary" value="Végane" class="sr-only" />
+                <span class="chip-box inline-block px-3.5 py-2 rounded-full text-xs sm:text-sm border border-[#5E1224]/20 bg-[#FAF7F2]">
+                  Végane
+                </span>
+              </label>
+              <label class="chip-option cursor-pointer">
+                <input type="checkbox" name="dietary" value="Sans gluten" class="sr-only" />
+                <span class="chip-box inline-block px-3.5 py-2 rounded-full text-xs sm:text-sm border border-[#5E1224]/20 bg-[#FAF7F2]">
+                  Sans gluten
+                </span>
+              </label>
+              <label class="chip-option cursor-pointer">
+                <input type="checkbox" name="dietary" value="Sans arachides" class="sr-only" />
+                <span class="chip-box inline-block px-3.5 py-2 rounded-full text-xs sm:text-sm border border-[#5E1224]/20 bg-[#FAF7F2]">
+                  Sans arachides
+                </span>
+              </label>
+            </div>
+
+            <div>
+              <label for="dietaryNotes" class="block text-sm font-medium text-[#2A1B1E] mb-1.5">
+                Allergie sévère ou précision par personne
+              </label>
+              <input
+                id="dietaryNotes"
+                name="dietaryNotes"
+                type="text"
+                placeholder="Ex. Marc est intolérant au lactose, allergie aux fruits de mer..."
+                class="custom-input"
+              />
+            </div>
+          </div>
+
+          <!-- 4. Hébergement en chalet -->
+          <div id="lodgingBlock" class="space-y-4">
+            <h3 class="font-editorial text-lg text-[#5E1224] border-b border-[#5E1224]/15 pb-2">
+              4. Souhaitez-vous dormir sur place en chalet ?
+            </h3>
+            <p class="text-xs sm:text-sm text-[#67585B]">
+              Les personnes qui dorment en chalet paient 55 $ par personne et par nuit (séparément de la contribution hors logement).
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <label class="chip-option cursor-pointer">
+                <input type="radio" name="lodgingChoice" value="Non, je rentre" class="sr-only" checked />
+                <div class="chip-box rounded-xl border border-[#5E1224]/20 bg-[#FAF7F2] px-4 py-3 text-center">
+                  <div class="text-sm font-semibold">Non, je rentre</div>
+                  <div class="text-xs opacity-75">Pas de nuitée en chalet</div>
+                </div>
+              </label>
+
+              <label class="chip-option cursor-pointer">
+                <input type="radio" name="lodgingChoice" value="1 nuit" class="sr-only" />
+                <div class="chip-box rounded-xl border border-[#5E1224]/20 bg-[#FAF7F2] px-4 py-3 text-center">
+                  <div class="text-sm font-semibold">1 nuit</div>
+                  <div class="text-xs opacity-75">Nuit du mariage</div>
+                </div>
+              </label>
+
+              <label class="chip-option cursor-pointer">
+                <input type="radio" name="lodgingChoice" value="2 nuits" class="sr-only" />
+                <div class="chip-box rounded-xl border border-[#5E1224]/20 bg-[#FAF7F2] px-4 py-3 text-center">
+                  <div class="text-sm font-semibold">2 nuits</div>
+                  <div class="text-xs opacity-75">Vendredi &amp; samedi</div>
+                </div>
+              </label>
+            </div>
+
+            <div id="lodgingDetailsRow" class="hidden">
+              <label for="lodgingPreference" class="block text-sm font-medium text-[#2A1B1E] mb-1.5">
+                Préférence de groupe ou de chalet / remarque d'hébergement
+              </label>
+              <input
+                id="lodgingPreference"
+                name="lodgingPreference"
+                type="text"
+                placeholder="Ex. On aimerait partager un chalet avec la famille Gagnon..."
+                class="custom-input"
+              />
+            </div>
+          </div>
+
+          <!-- 5. Contribution hors logement, chanson & petit mot -->
+          <div class="space-y-4">
+            <h3 class="font-editorial text-lg text-[#5E1224] border-b border-[#5E1224]/15 pb-2">
+              5. Contribution hors logement, chanson &amp; petit mot
+            </h3>
+
+            <div id="contribBlock" class="rounded-2xl bg-[#FAF7F2] border border-[#5E1224]/15 p-4 sm:p-5 space-y-3">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                  <label for="contribAmount" class="block text-sm font-semibold text-[#2A1B1E]">
+                    Contribution estimée hors logement (CAD $)
+                  </label>
+                  <p class="text-xs text-[#67585B]">
+                    Suggestion de référence : <span id="contribHintAmount">50 $</span> par invité (modifiable librement, 0 $ possible).
+                  </p>
+                </div>
+                <div class="w-full sm:w-44">
+                  <div class="relative">
+                    <input
+                      id="contribAmount"
+                      name="contribAmount"
+                      type="number"
+                      min="0"
+                      step="5"
+                      value="100"
+                      class="custom-input pr-12 font-semibold text-[#5E1224]"
+                    />
+                    <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-medium text-[#67585B]">$ CAD</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="songRequest" class="block text-sm font-medium text-[#2A1B1E] mb-1.5">
+                  Chanson qui vous fera danser 🎶
+                </label>
+                <input
+                  id="songRequest"
+                  name="songRequest"
+                  type="text"
+                  placeholder="Ex. Fleetwood Mac - Dreams / Les Cowboys Fringants..."
+                  class="custom-input"
+                />
+              </div>
+
+              <div>
+                <label for="guestMessage" class="block text-sm font-medium text-[#2A1B1E] mb-1.5">
+                  Un mot doux pour les mariés
+                </label>
+                <input
+                  id="guestMessage"
+                  name="guestMessage"
+                  type="text"
+                  placeholder="Votre vœu ou anecdote..."
+                  class="custom-input"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Bouton de soumission -->
+          <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p class="text-xs text-[#67585B] text-center sm:text-left">
+              Une seule réponse par groupe ou famille suffit. Merci de répondre avant la date limite indiquée plus haut.
+            </p>
+            <button
+              type="submit"
+              class="btn-burgundy w-full sm:w-auto px-8 py-3.5 rounded-full font-medium text-sm sm:text-base tracking-wide cursor-pointer"
+            >
+              Envoyer ma réponse RSVP
+            </button>
+          </div>
+          <p id="submitError" class="hidden text-sm text-[#C84B28] text-center">
+            L'envoi a échoué. Vérifiez votre connexion et réessayez, ou écrivez-nous directement.
+            <span id="submitErrorDetail" class="block text-xs opacity-70 mt-1"></span>
+          </p>
+        </form>
+      </div>
+    </section>
+
+    <!-- SECTION 4 : PANNEAU DISCRET HÔTES (APERÇU DES RÉPONSES, EXPORT CSV, RÉINITIALISATION) -->
+    <section class="pt-2 host-only">
+      <div class="flex flex-col items-center">
+        <button
+          id="toggleHostsPanelBtn"
+          type="button"
+          class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium text-[#67585B] hover:text-[#5E1224] bg-[#F3ECE1]/80 hover:bg-[#F3ECE1] border border-[#5E1224]/15 transition cursor-pointer"
+        >
+          <svg class="w-4 h-4 text-[#5E1224]" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <span id="hostsPanelBtnLabel">Aperçu des réponses enregistrées (Hôtes)</span>
+          <span id="rsvpCounterBadge" class="px-2 py-0.5 rounded-full bg-[#5E1224] text-[#FAF7F2] text-[11px] font-semibold">0</span>
+        </button>
+      </div>
+
+      <div id="hostsPanel" class="hidden mt-6 paper-grain rounded-3xl p-6 sm:p-8 space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#5E1224]/15 pb-4">
+          <div>
+            <p class="text-xs uppercase tracking-[0.2em] text-[#3D5A45] font-semibold">Espace organisateurs</p>
+            <h3 class="font-editorial text-2xl text-[#2A1B1E]">
+              Réponses RSVP Enregistrées
+            </h3>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2.5">
+            <button
+              id="exportCsvBtn"
+              type="button"
+              class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold bg-[#3D5A45] text-white hover:bg-[#2F4635] transition cursor-pointer"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span>Exporter CSV (INVITÉS / BUDGET)</span>
+            </button>
+
+            <button
+              id="copySummaryBtn"
+              type="button"
+              class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold bg-[#F3ECE1] text-[#2A1B1E] hover:bg-[#E6DAC8] border border-[#5E1224]/20 transition cursor-pointer"
+            >
+              <span>Copier le résumé</span>
+            </button>
+
+            <button
+              id="resetRsvpBtn"
+              type="button"
+              class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold bg-[#FCECE7] text-[#C84B28] hover:bg-[#F8D9D0] border border-[#C84B28]/25 transition cursor-pointer"
+            >
+              <span>Réinitialiser les tests</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Feedback copie / export -->
+        <div id="hostActionNotice" class="hidden rounded-xl px-4 py-2.5 text-xs font-medium bg-[#ECEFFD] text-[#2A1B1E] border border-[#7B8CDE]/40"></div>
+
+        <!-- Statistiques rapides -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+          <div class="rounded-2xl bg-[#FAF7F2] border border-[#5E1224]/10 p-4">
+            <div class="text-xs text-[#67585B]">Invités confirmés</div>
+            <div id="statConfirmedGuests" class="mt-1 font-editorial text-2xl sm:text-3xl font-bold text-[#3D5A45]">0</div>
+          </div>
+          <div class="rounded-2xl bg-[#FAF7F2] border border-[#5E1224]/10 p-4">
+            <div class="text-xs text-[#67585B]">Réponses « Non »</div>
+            <div id="statDeclinedGroups" class="mt-1 font-editorial text-2xl sm:text-3xl font-bold text-[#C84B28]">0</div>
+          </div>
+          <div class="rounded-2xl bg-[#FAF7F2] border border-[#5E1224]/10 p-4">
+            <div class="text-xs text-[#67585B]">Demandes chalet</div>
+            <div id="statLodgingRequests" class="mt-1 font-editorial text-2xl sm:text-3xl font-bold text-[#5E1224]">0</div>
+          </div>
+          <div class="rounded-2xl bg-[#FAF7F2] border border-[#5E1224]/10 p-4">
+            <div class="text-xs text-[#67585B]">Contrib. hors logement</div>
+            <div id="statTotalContrib" class="mt-1 font-editorial text-2xl sm:text-3xl font-bold text-[#2A1B1E]">0 $</div>
+          </div>
+        </div>
+
+        <!-- Tableau des réponses -->
+        <div class="overflow-x-auto rounded-2xl border border-[#5E1224]/15">
+          <table class="w-full text-left border-collapse text-xs sm:text-sm">
+            <thead>
+              <tr class="bg-[#5E1224] text-[#FAF7F2]">
+                <th class="py-3 px-3.5 font-medium">Invité / Groupe</th>
+                <th class="py-3 px-3.5 font-medium">Présence</th>
+                <th class="py-3 px-3.5 font-medium">Pers.</th>
+                <th class="py-3 px-3.5 font-medium">Régimes / Allergies</th>
+                <th class="py-3 px-3.5 font-medium">Chalet</th>
+                <th class="py-3 px-3.5 font-medium">Contrib.</th>
+                <th class="py-3 px-3.5 font-medium">Note / Chanson</th>
+                <th class="py-3 px-3.5 font-medium text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody id="rsvpTableBody" class="divide-y divide-[#5E1224]/10 bg-white">
+              <tr>
+                <td colspan="8" class="py-8 text-center text-[#67585B]">
+                  Aucune réponse enregistrée pour le moment. Remplissez le formulaire ci-dessus pour tester.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODALE DE PERSONNALISATION DES INFOS DU MARIAGE -->
+  <div
+    id="customizeModal"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-[#2A1B1E]/60 backdrop-blur-xs p-4 overflow-y-auto"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="customizeModalTitle"
+  >
+    <div class="paper-grain w-full max-w-2xl rounded-3xl p-6 sm:p-8 relative my-8">
+      <div class="flex items-center justify-between border-b border-[#5E1224]/15 pb-4 mb-5">
+        <div>
+          <p class="text-xs uppercase tracking-[0.2em] text-[#C84B28] font-semibold">Édition en direct</p>
+          <h2 id="customizeModalTitle" class="font-editorial text-2xl text-[#2A1B1E]">
+            Personnaliser l'invitation &amp; les paramètres
+          </h2>
+        </div>
+        <button
+          id="closeCustomizeBtn"
+          type="button"
+          class="w-9 h-9 rounded-full bg-[#F3ECE1] hover:bg-[#E5D9C7] text-[#2A1B1E] flex items-center justify-center cursor-pointer"
+          aria-label="Fermer"
+        >
+          ✕
+        </button>
+      </div>
+
+      <form id="customizeForm" class="space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="cfgKicker" class="block text-xs font-semibold uppercase tracking-wider text-[#67585B] mb-1">
+              Titre éditorial court
+            </label>
+            <input id="cfgKicker" type="text" class="custom-input" />
+          </div>
+          <div>
+            <label for="cfgMonogram" class="block text-xs font-semibold uppercase tracking-wider text-[#67585B] mb-1">
+              Monogramme (enveloppe)
+            </label>
+            <input id="cfgMonogram" type="text" class="custom-input" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="cfgCoupleNames" class="block text-xs font-semibold uppercase tracking-wider text-[#67585B] mb-1">
+              Noms des mariés
+            </label>
+            <input id="cfgCoupleNames" type="text" class="custom-input" />
+          </div>
+          <div>
+            <label for="cfgDateDisplay" class="block text-xs font-semibold uppercase tracking-wider text-[#67585B] mb-1">
+              Date complète
+            </label>
+            <input id="cfgDateDisplay" type="text" class="custom-input" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="cfgCardDateBig" class="block text-xs font-semibold uppercase tracking-wider text-[#67585B] mb-1">
+              Date sur la carte bordeaux
+            </label>
+            <input id="cfgCardDateBig" type="text" class="custom-input" />
+          </div>
+          <div>
+            <label for="cfgDeadline" class="block text-xs font-semibold uppercase tracking-wider text-[#67585B] mb-1">
+              Date limite RSVP
+            </label>
+            <input id="cfgDeadline" type="text" class="custom-input" />
+          </div>
+        </div>
+
+        <div>
+          <label for="cfgLocation" class="block text-xs font-semibold uppercase tracking-wider text-[#67585B] mb-1">
+            Lieu / Domaine
+          </label>
+          <input id="cfgLocation" type="text" class="custom-input" />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="cfgSchedule" class="block text-xs font-semibold uppercase tracking-wider text-[#67585B] mb-1">
+              Horaire (verso carte bordeaux)
+            </label>
+            <input id="cfgSchedule" type="text" class="custom-input" />
+          </div>
+          <div>
+            <label for="cfgSuggestedContrib" class="block text-xs font-semibold uppercase tracking-wider text-[#67585B] mb-1">
+              Contribution suggérée / invité ($ CAD)
+            </label>
+            <input id="cfgSuggestedContrib" type="number" min="0" step="5" class="custom-input" />
+          </div>
+        </div>
+
+        <div>
+          <label for="cfgFoodInfo" class="block text-xs font-semibold uppercase tracking-wider text-[#67585B] mb-1">
+            Note repas &amp; boissons
+          </label>
+          <textarea id="cfgFoodInfo" rows="2" class="custom-input"></textarea>
+        </div>
+
+        <div>
+          <label for="cfgLodgingInfo" class="block text-xs font-semibold uppercase tracking-wider text-[#67585B] mb-1">
+            Note hébergement en chalet
+          </label>
+          <textarea id="cfgLodgingInfo" rows="2" class="custom-input"></textarea>
+        </div>
+
+        <div class="pt-3 flex flex-wrap items-center justify-between gap-3 border-t border-[#5E1224]/15">
+          <button
+            id="restoreDefaultConfigBtn"
+            type="button"
+            class="px-4 py-2 rounded-full text-xs font-medium text-[#67585B] hover:text-[#2A1B1E] bg-[#F3ECE1] cursor-pointer"
+          >
+            Valeurs par défaut
+          </button>
+          <div class="flex items-center gap-2.5">
+            <button
+              id="cancelCustomizeBtn"
+              type="button"
+              class="px-4 py-2 rounded-full text-xs font-medium border border-[#5E1224]/20 text-[#2A1B1E] cursor-pointer"
+            >
+              Annuler
+            </button>
+            <button
+              type="submit"
+              class="btn-burgundy px-6 py-2.5 rounded-full text-xs sm:text-sm font-medium cursor-pointer"
+            >
+              Enregistrer les infos
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const CONFIG_STORAGE_KEY = 'mariage_rsvp_config_v1';
+      const RESPONSES_STORAGE_KEY = 'mariage_rsvp_responses_v1';
+
+      // URL de l'application web Google Apps Script qui écrit dans le Google Sheet.
+      // Laisser vide = réponses gardées seulement dans le navigateur (mode test).
+      const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbx-cweCaEsyQYLf-ylW2Ls_971qTvus7Kc6YgUdyZPPA1yWlhaSK6qT0fycFF75og_Q/exec';
+
+      // ============================================================
+      // MODIFIER LES TEXTES ICI : dates, lieu, horaire, montants, notes.
+      // Changez seulement le texte entre guillemets, puis enregistrez.
+      // (Les textes plus haut dans la page sont remplacés par ceux-ci.)
+      // ============================================================
+      const DEFAULT_CONFIG = {
+        kicker: 'ON SE MARIE • 2027 • J & J',
+        monogram: 'J & J',
+        coupleNames: 'Justine & Julien',
+        subtitle:
+          "Nous avons tellement hâte de célébrer notre amour entourés de nos proches le temps d'un week-end chaleureux et festif.",
+        dateDisplay: '02 octobre 2027',
+        cardDateBig: '02 • 10 • 2027',
+        location: 'Domaine Pourki',
+        venueShort: 'Cérémonie • Souper • Soirée en chalets',
+        scheduleText:
+          'Arrivée dès 13h00 • Buffet festif & danse',
+        deadline: '15 Juin 2027',
+        suggestedContrib: 50,
+        foodInfo:
+          'Buffet traiteur convivial (formule sans personnel de service) avec bouchées, dessert et bar maison (vin, bières, prêts-à-boire et options sans alcool).',
+        lodgingInfo:
+          "Des chalets partagés (de 4 à 10 personnes) sont disponibles sur place au coût de 55 $/personne/nuit si ça vous tente de dormir sur place. Restez bruncher avec nous le lendemain :)"
+      };
+
+      function safeParse(jsonStr, fallback) {
+        try {
+          const parsed = JSON.parse(jsonStr);
+          return parsed ?? fallback;
+        } catch (err) {
+          console.error('Erreur de lecture localStorage :', err);
+          return fallback;
+        }
+      }
+
+      let config = {
+        ...DEFAULT_CONFIG,
+        ...safeParse(localStorage.getItem(CONFIG_STORAGE_KEY), {})
+      };
+
+      let responses = safeParse(localStorage.getItem(RESPONSES_STORAGE_KEY), []);
+      if (!Array.isArray(responses)) {
+        responses = [];
+      }
+
+      function saveConfig() {
+        try {
+          localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(config));
+        } catch (err) {
+          console.error('Erreur sauvegarde configuration :', err);
+        }
+      }
+
+      function saveResponses() {
+        try {
+          localStorage.setItem(RESPONSES_STORAGE_KEY, JSON.stringify(responses));
+        } catch (err) {
+          console.error('Erreur sauvegarde réponses :', err);
+        }
+      }
+
+      function applyConfigToUI() {
+        document.getElementById('navBrandText').textContent = config.kicker;
+        document.getElementById('heroKicker').textContent = config.kicker;
+        document.getElementById('heroCoupleNames').textContent = config.coupleNames;
+        document.getElementById('heroSubtitle').textContent = config.subtitle;
+        document.getElementById('heroDateDisplay').textContent = config.dateDisplay;
+        document.getElementById('heroLocationDisplay').textContent = config.location;
+        document.getElementById('cardDateBig').textContent = config.cardDateBig;
+        document.getElementById('cardVenueShort').textContent = config.venueShort;
+        document.getElementById('cardScheduleText').textContent = config.scheduleText;
+        document.getElementById('monogramText').textContent = config.monogram;
+        document.getElementById('rsvpDeadlineText').textContent = config.deadline;
+        document.getElementById('foodInfoText').textContent = config.foodInfo;
+        document.getElementById('lodgingInfoText').textContent = config.lodgingInfo;
+
+        const contribNum = Number(config.suggestedContrib) || 0;
+        document.getElementById('suggestedContribDisplay').textContent = `${contribNum} $ / invité`;
+        document.getElementById('contribHintAmount').textContent = `${contribNum} $`;
+
+        // Ajuste le montant suggéré par défaut selon le nombre de personnes sélectionné
+        syncDefaultContribution();
+      }
+
+      function syncDefaultContribution() {
+        const attendance = document.querySelector('input[name="attendance"]:checked')?.value;
+        const count = parseInt(document.getElementById('guestCount').value, 10) || 1;
+        const contribInput = document.getElementById('contribAmount');
+
+        if (attendance !== "Oui, j'y serai") {
+          contribInput.value = 0;
+          return;
+        }
+        if (!contribInput.dataset.userEdited) {
+          contribInput.value = count * (Number(config.suggestedContrib) || 0);
+        }
+      }
+
+      // Bascule de la carte bordeaux centrale
+      let cardFlipped = false;
+      document.getElementById('toggleCardDetailsBtn').addEventListener('click', () => {
+        cardFlipped = !cardFlipped;
+        document.getElementById('cardPrimaryView').classList.toggle('hidden', cardFlipped);
+        document.getElementById('cardSecondaryView').classList.toggle('hidden', !cardFlipped);
+        document.getElementById('cardFlipLabel').textContent = cardFlipped
+          ? 'Revenir au Save the Date'
+          : "Toucher pour voir l'horaire";
+      });
+
+      // Comportement dynamique des champs du formulaire selon présence et hébergement
+      const attendanceRadios = document.querySelectorAll('input[name="attendance"]');
+      const attendingFields = document.getElementById('attendingFields');
+      const dietaryBlock = document.getElementById('dietaryBlock');
+      const lodgingBlock = document.getElementById('lodgingBlock');
+      const contribBlock = document.getElementById('contribBlock');
+
+      function updateAttendanceVisibility() {
+        const isComing = document.querySelector('input[name="attendance"]:checked')?.value === "Oui, j'y serai";
+        attendingFields.classList.toggle('hidden', !isComing);
+        dietaryBlock.classList.toggle('hidden', !isComing);
+        lodgingBlock.classList.toggle('hidden', !isComing);
+        contribBlock.classList.toggle('hidden', !isComing);
+        syncDefaultContribution();
+      }
+
+      attendanceRadios.forEach((radio) => {
+        radio.addEventListener('change', updateAttendanceVisibility);
+      });
+
+      document.getElementById('guestCount').addEventListener('change', () => {
+        delete document.getElementById('contribAmount').dataset.userEdited;
+        syncDefaultContribution();
+      });
+
+      document.getElementById('contribAmount').addEventListener('input', (e) => {
+        e.target.dataset.userEdited = 'true';
+      });
+
+      const lodgingRadios = document.querySelectorAll('input[name="lodgingChoice"]');
+      const lodgingDetailsRow = document.getElementById('lodgingDetailsRow');
+      lodgingRadios.forEach((radio) => {
+        radio.addEventListener('change', () => {
+          const val = document.querySelector('input[name="lodgingChoice"]:checked')?.value;
+          lodgingDetailsRow.classList.toggle('hidden', val === 'Non, je rentre');
+        });
+      });
+
+      // Gestion des cases de régime alimentaire (cohérence avec "Aucun régime particulier")
+      const dietaryCheckboxes = document.querySelectorAll('input[name="dietary"]');
+      const noneDietaryBox = document.querySelector('input[name="dietary"][value="Aucun régime particulier"]');
+
+      dietaryCheckboxes.forEach((box) => {
+        box.addEventListener('change', () => {
+          if (box === noneDietaryBox && noneDietaryBox.checked) {
+            dietaryCheckboxes.forEach((other) => {
+              if (other !== noneDietaryBox) other.checked = false;
+            });
+          } else if (box !== noneDietaryBox && box.checked) {
+            noneDietaryBox.checked = false;
+          }
+          const anyChecked = Array.from(dietaryCheckboxes).some((cb) => cb.checked);
+          if (!anyChecked) {
+            noneDietaryBox.checked = true;
+          }
+        });
+      });
+
+      // Soumission du formulaire RSVP
+      const rsvpForm = document.getElementById('rsvpForm');
+      async function sendToSheet(entry) {
+        if (!SHEET_ENDPOINT) return;
+        const res = await fetch(SHEET_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(entry)
+        });
+        let data = null;
+        try {
+          data = await res.json();
+        } catch (e) {
+          data = null;
+        }
+        if (!res.ok || !data || data.ok !== true) {
+          throw new Error((data && data.error) || ('Réponse inattendue du serveur (' + res.status + ')'));
+        }
+      }
+
+      rsvpForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const nameInput = document.getElementById('guestName');
+        const contactInput = document.getElementById('guestContact');
+        const nameErr = document.getElementById('guestNameError');
+        const contactErr = document.getElementById('guestContactError');
+
+        let valid = true;
+        if (!nameInput.value.trim()) {
+          nameErr.classList.remove('hidden');
+          nameInput.focus();
+          valid = false;
+        } else {
+          nameErr.classList.add('hidden');
+        }
+
+        if (!contactInput.value.trim()) {
+          contactErr.classList.remove('hidden');
+          if (valid) contactInput.focus();
+          valid = false;
+        } else {
+          contactErr.classList.add('hidden');
+        }
+
+        if (!valid) return;
+
+        const attendance = document.querySelector('input[name="attendance"]:checked')?.value || "Oui, j'y serai";
+        const isComing = attendance === "Oui, j'y serai";
+        const guestCount = isComing ? (parseInt(document.getElementById('guestCount').value, 10) || 1) : 0;
+        const companions = isComing ? document.getElementById('companionsNames').value.trim() : '';
+
+        const selectedDietaries = isComing
+          ? Array.from(document.querySelectorAll('input[name="dietary"]:checked')).map((el) => el.value)
+          : [];
+        const dietaryNotes = isComing ? document.getElementById('dietaryNotes').value.trim() : '';
+        const dietaryCombined = [
+          ...selectedDietaries.filter((d) => !(selectedDietaries.length > 1 && d === 'Aucun régime particulier')),
+          dietaryNotes ? `Note : ${dietaryNotes}` : ''
+        ]
+          .filter(Boolean)
+          .join(' • ');
+
+        const lodgingChoice = isComing
+          ? (document.querySelector('input[name="lodgingChoice"]:checked')?.value || 'Non, je rentre')
+          : 'Non applicable';
+        const lodgingPref = isComing ? document.getElementById('lodgingPreference').value.trim() : '';
+        const lodgingCombined = lodgingPref ? `${lodgingChoice} (${lodgingPref})` : lodgingChoice;
+
+        const contribAmount = isComing
+          ? Math.max(0, Number(document.getElementById('contribAmount').value) || 0)
+          : 0;
+
+        const songRequest = document.getElementById('songRequest').value.trim();
+        const guestMessage = document.getElementById('guestMessage').value.trim();
+
+        const entry = {
+          id: `rsvp_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+          submittedAt: new Date().toLocaleString('fr-CA'),
+          guestName: nameInput.value.trim(),
+          contact: contactInput.value.trim(),
+          attendance,
+          guestCount,
+          companions,
+          dietary: dietaryCombined || 'Aucun régime particulier',
+          lodging: lodgingCombined,
+          lodgingChoice,
+          contribAmount,
+          songRequest,
+          guestMessage
+        };
+
+        const submitBtn = rsvpForm.querySelector('button[type="submit"]');
+        const submitError = document.getElementById('submitError');
+        const submitLabel = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Envoi en cours…';
+        submitError.classList.add('hidden');
+        try {
+          await sendToSheet(entry);
+        } catch (err) {
+          console.error('Erreur envoi RSVP :', err);
+          document.getElementById('submitErrorDetail').textContent = 'Détail : ' + String((err && err.message) || err);
+          submitError.classList.remove('hidden');
+          submitBtn.disabled = false;
+          submitBtn.textContent = submitLabel;
+          return;
+        }
+        submitBtn.disabled = false;
+        submitBtn.textContent = submitLabel;
+
+        responses.unshift(entry);
+        saveResponses();
+        renderResponsesTable();
+
+        // Affichage de la confirmation chaleureuse
+        const banner = document.getElementById('confirmationBanner');
+        const titleEl = document.getElementById('confirmationTitle');
+        const summaryEl = document.getElementById('confirmationSummary');
+
+        if (isComing) {
+          titleEl.textContent = `Merci ${entry.guestName} ! Votre présence est enregistrée.`;
+          summaryEl.textContent = `${guestCount} personne(s) • Chalet : ${lodgingCombined} • Contribution hors logement : ${contribAmount} $ CAD.`;
+        } else {
+          titleEl.textContent = `Merci ${entry.guestName}, votre réponse a bien été transmise.`;
+          summaryEl.textContent = 'Nous sommes désolés que vous ne puissiez pas être des nôtres, mais votre message a bien été noté.';
+        }
+
+        if (SHEET_ENDPOINT) {
+          summaryEl.textContent += ' Votre réponse a bien été transmise aux mariés.';
+        }
+
+        banner.classList.remove('hidden');
+        rsvpForm.classList.add('hidden');
+        banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+
+      document.getElementById('newRsvpBtn').addEventListener('click', () => {
+        rsvpForm.reset();
+        delete document.getElementById('contribAmount').dataset.userEdited;
+        document.getElementById('lodgingDetailsRow').classList.add('hidden');
+        updateAttendanceVisibility();
+        document.getElementById('confirmationBanner').classList.add('hidden');
+        rsvpForm.classList.remove('hidden');
+      });
+
+      // Panneau Hôtes : rendu, suppression, export CSV, copie, réinitialisation
+      const hostsPanel = document.getElementById('hostsPanel');
+      document.getElementById('toggleHostsPanelBtn').addEventListener('click', () => {
+        hostsPanel.classList.toggle('hidden');
+        if (!hostsPanel.classList.contains('hidden')) {
+          hostsPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      });
+
+      function showHostNotice(msg) {
+        const el = document.getElementById('hostActionNotice');
+        el.textContent = msg;
+        el.classList.remove('hidden');
+        setTimeout(() => {
+          el.classList.add('hidden');
+        }, 3800);
+      }
+
+      function escapeHtml(str) {
+        return String(str || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      function renderResponsesTable() {
+        document.getElementById('rsvpCounterBadge').textContent = String(responses.length);
+
+        let confirmedGuests = 0;
+        let declinedGroups = 0;
+        let lodgingRequests = 0;
+        let totalContrib = 0;
+
+        responses.forEach((r) => {
+          if (r.attendance === "Oui, j'y serai") {
+            confirmedGuests += Number(r.guestCount) || 0;
+            if (r.lodgingChoice && r.lodgingChoice !== 'Non, je rentre') {
+              lodgingRequests += Number(r.guestCount) || 1;
+            }
+            totalContrib += Number(r.contribAmount) || 0;
+          } else {
+            declinedGroups += 1;
+          }
+        });
+
+        document.getElementById('statConfirmedGuests').textContent = String(confirmedGuests);
+        document.getElementById('statDeclinedGroups').textContent = String(declinedGroups);
+        document.getElementById('statLodgingRequests').textContent = String(lodgingRequests);
+        document.getElementById('statTotalContrib').textContent = `${totalContrib.toLocaleString('fr-CA')} $`;
+
+        const tbody = document.getElementById('rsvpTableBody');
+        if (responses.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="8" class="py-8 text-center text-[#67585B]">
+                Aucune réponse enregistrée pour le moment. Remplissez le formulaire ci-dessus pour tester.
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = responses
+          .map((r) => {
+            const isYes = r.attendance === "Oui, j'y serai";
+            const badgeClass = isYes
+              ? 'bg-[#EBF2ED] text-[#3D5A45] border border-[#3D5A45]/25'
+              : 'bg-[#FCECE7] text-[#C84B28] border border-[#C84B28]/25';
+
+            const noteParts = [];
+            if (r.companions) noteParts.push(`Avec : ${r.companions}`);
+            if (r.songRequest) noteParts.push(`♪ ${r.songRequest}`);
+            if (r.guestMessage) noteParts.push(`« ${r.guestMessage} »`);
+            if (r.contact) noteParts.push(`(${r.contact})`);
+
+            return `
+              <tr class="hover:bg-[#FAF7F2]/80 transition">
+                <td class="py-3 px-3.5 font-medium text-[#2A1B1E]">${escapeHtml(r.guestName)}</td>
+                <td class="py-3 px-3.5">
+                  <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold ${badgeClass}">
+                    ${isYes ? 'Oui' : 'Non'}
+                  </span>
+                </td>
+                <td class="py-3 px-3.5 font-semibold">${isYes ? escapeHtml(r.guestCount) : '—'}</td>
+                <td class="py-3 px-3.5 text-[#67585B] max-w-[180px]">${isYes ? escapeHtml(r.dietary) : '—'}</td>
+                <td class="py-3 px-3.5 text-[#2A1B1E]">${isYes ? escapeHtml(r.lodging) : '—'}</td>
+                <td class="py-3 px-3.5 font-medium text-[#5E1224]">${isYes ? `${Number(r.contribAmount) || 0} $` : '0 $'}</td>
+                <td class="py-3 px-3.5 text-xs text-[#67585B] max-w-[220px]">${escapeHtml(noteParts.join(' • ') || '—')}</td>
+                <td class="py-3 px-3.5 text-right">
+                  <button
+                    type="button"
+                    data-delete-id="${escapeHtml(r.id)}"
+                    class="delete-rsvp-btn text-xs text-[#C84B28] hover:underline font-medium cursor-pointer"
+                  >
+                    Supprimer
+                  </button>
+                </td>
+              </tr>
+            `;
+          })
+          .join('');
+
+        tbody.querySelectorAll('.delete-rsvp-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const targetId = btn.getAttribute('data-delete-id');
+            responses = responses.filter((item) => item.id !== targetId);
+            saveResponses();
+            renderResponsesTable();
+            showHostNotice('Entrée supprimée.');
+          });
+        });
+      }
+
+      // Export CSV compatible feuille INVITÉS / BUDGET
+      document.getElementById('exportCsvBtn').addEventListener('click', () => {
+        if (responses.length === 0) {
+          showHostNotice('Aucune réponse à exporter pour le moment.');
+          return;
+        }
+
+        const headers = [
+          'Date_Reponse',
+          'Nom_Groupe',
+          'Contact',
+          'Statut_RSVP',
+          'Nombre_Personnes',
+          'Accompagnants',
+          'Allergies_Regimes',
+          'Hebergement_Chalet',
+          'Contribution_Hors_Logement_CAD',
+          'Chanson',
+          'Message'
+        ];
+
+        const csvCell = (val) => {
+          const str = String(val ?? '').replace(/"/g, '""');
+          return `"${str}"`;
+        };
+
+        const rows = responses.map((r) => [
+          csvCell(r.submittedAt),
+          csvCell(r.guestName),
+          csvCell(r.contact),
+          csvCell(r.attendance),
+          csvCell(r.guestCount),
+          csvCell(r.companions),
+          csvCell(r.dietary),
+          csvCell(r.lodging),
+          csvCell(r.contribAmount),
+          csvCell(r.songRequest),
+          csvCell(r.guestMessage)
+        ].join(','));
+
+        const csvContent = '\uFEFF' + [headers.map(csvCell).join(','), ...rows].join('\n');
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'reponses-rsvp-mariage.csv';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        showHostNotice('Fichier CSV téléchargé (prêt pour Google Sheets / INVITÉS & BUDGET).');
+      });
+
+      // Copier le résumé dans le presse-papier
+      document.getElementById('copySummaryBtn').addEventListener('click', () => {
+        if (responses.length === 0) {
+          showHostNotice('Aucune réponse à copier.');
+          return;
+        }
+        const lines = responses.map(
+          (r) =>
+            `• ${r.guestName} — ${r.attendance} (${r.guestCount} pers.) | Chalet: ${r.lodging} | Contrib: ${r.contribAmount} $ | Régimes: ${r.dietary}`
+        );
+        const textToCopy = `RÉSUMÉ RSVP — ${config.coupleNames}\n` + lines.join('\n');
+
+        const helper = document.createElement('textarea');
+        helper.value = textToCopy;
+        helper.style.position = 'fixed';
+        helper.style.opacity = '0';
+        document.body.appendChild(helper);
+        helper.select();
+        try {
+          document.execCommand('copy');
+          showHostNotice('Résumé copié dans le presse-papier.');
+        } catch (err) {
+          console.error('Erreur copie :', err);
+          showHostNotice('Impossible de copier automatiquement.');
+        }
+        document.body.removeChild(helper);
+      });
+
+      // Réinitialisation des réponses de test sans alert()
+      let resetArmed = false;
+      const resetBtn = document.getElementById('resetRsvpBtn');
+      resetBtn.addEventListener('click', () => {
+        if (!resetArmed) {
+          resetArmed = true;
+          resetBtn.textContent = 'Cliquer encore pour effacer';
+          setTimeout(() => {
+            resetArmed = false;
+            resetBtn.textContent = 'Réinitialiser les tests';
+          }, 3500);
+          return;
+        }
+        responses = [];
+        saveResponses();
+        renderResponsesTable();
+        resetArmed = false;
+        resetBtn.textContent = 'Réinitialiser les tests';
+        showHostNotice('Toutes les réponses de test ont été effacées.');
+      });
+
+      // Modale de personnalisation
+      const customizeModal = document.getElementById('customizeModal');
+      function openCustomizeModal() {
+        document.getElementById('cfgKicker').value = config.kicker;
+        document.getElementById('cfgMonogram').value = config.monogram;
+        document.getElementById('cfgCoupleNames').value = config.coupleNames;
+        document.getElementById('cfgDateDisplay').value = config.dateDisplay;
+        document.getElementById('cfgCardDateBig').value = config.cardDateBig;
+        document.getElementById('cfgDeadline').value = config.deadline;
+        document.getElementById('cfgLocation').value = config.location;
+        document.getElementById('cfgSchedule').value = config.scheduleText;
+        document.getElementById('cfgSuggestedContrib').value = config.suggestedContrib;
+        document.getElementById('cfgFoodInfo').value = config.foodInfo;
+        document.getElementById('cfgLodgingInfo').value = config.lodgingInfo;
+
+        customizeModal.classList.remove('hidden');
+        customizeModal.classList.add('flex');
+      }
+
+      function closeCustomizeModal() {
+        customizeModal.classList.add('hidden');
+        customizeModal.classList.remove('flex');
+      }
+
+      document.getElementById('openCustomizeBtn').addEventListener('click', openCustomizeModal);
+      document.getElementById('closeCustomizeBtn').addEventListener('click', closeCustomizeModal);
+      document.getElementById('cancelCustomizeBtn').addEventListener('click', closeCustomizeModal);
+
+      customizeModal.addEventListener('click', (e) => {
+        if (e.target === customizeModal) {
+          closeCustomizeModal();
+        }
+      });
+
+      document.getElementById('restoreDefaultConfigBtn').addEventListener('click', () => {
+        config = { ...DEFAULT_CONFIG };
+        saveConfig();
+        applyConfigToUI();
+        openCustomizeModal();
+      });
+
+      document.getElementById('customizeForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        config = {
+          ...config,
+          kicker: document.getElementById('cfgKicker').value.trim() || DEFAULT_CONFIG.kicker,
+          monogram: document.getElementById('cfgMonogram').value.trim() || DEFAULT_CONFIG.monogram,
+          coupleNames: document.getElementById('cfgCoupleNames').value.trim() || DEFAULT_CONFIG.coupleNames,
+          dateDisplay: document.getElementById('cfgDateDisplay').value.trim() || DEFAULT_CONFIG.dateDisplay,
+          cardDateBig: document.getElementById('cfgCardDateBig').value.trim() || DEFAULT_CONFIG.cardDateBig,
+          deadline: document.getElementById('cfgDeadline').value.trim() || DEFAULT_CONFIG.deadline,
+          location: document.getElementById('cfgLocation').value.trim() || DEFAULT_CONFIG.location,
+          scheduleText: document.getElementById('cfgSchedule').value.trim() || DEFAULT_CONFIG.scheduleText,
+          suggestedContrib: Math.max(0, Number(document.getElementById('cfgSuggestedContrib').value) || 0),
+          foodInfo: document.getElementById('cfgFoodInfo').value.trim() || DEFAULT_CONFIG.foodInfo,
+          lodgingInfo: document.getElementById('cfgLodgingInfo').value.trim() || DEFAULT_CONFIG.lodgingInfo
+        };
+        saveConfig();
+        delete document.getElementById('contribAmount').dataset.userEdited;
+        applyConfigToUI();
+        closeCustomizeModal();
+      });
+
+      // Mode mariés : ajouter ?hotes=1 à l'adresse pour voir les outils d'administration
+      try {
+        if (new URLSearchParams(window.location.search).has('hotes')) {
+          document.body.classList.add('is-host');
+        }
+      } catch (err) {
+        console.error(err);
+      }
+
+      // Initialisation au chargement
+      applyConfigToUI();
+      updateAttendanceVisibility();
+      renderResponsesTable();
+    })();
+  </script>
+</body>
+</html>
